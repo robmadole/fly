@@ -5,7 +5,7 @@
   "main": "lib/index.js",
   "scripts": {
     "start": "./bin/fly server ./apps/getting-started",
-    "test": "node ./lib/cmd/index.js test v8env_test/**/*.spec.js && mocha",
+    "test": "standard && node ./lib/cmd/index.js test v8env_test/**/*.spec.js && mocha",
     "coverage": "nyc npm test && nyc report --reporter=text-lcov | coveralls",
     "build": "tsc",
     "build:live": "npm run build -- -w",
@@ -39,12 +39,15 @@
     "chai": "^4.1.2",
     "coveralls": "^3.0.0",
     "debug": "^3.1.0",
+    "eslint-plugin-typescript": "^0.9.0",
     "nyc": "^11.3.0",
     "replay": "file:./vendor/replay",
+    "standard": "^11.0.0",
     "standard-version": "^4.3.0",
     "ts-loader": "^3.2.0",
     "ts-node": "^3.3.0",
-    "typescript": "^2.7.2"
+    "typescript": "^2.7.2",
+    "typescript-eslint-parser": "^14.0.0"
   },
   "dependencies": {
     "ansi-colors": "^1.1.0",
@@ -109,5 +112,16 @@
       "text"
     ],
     "all": true
+  },
+  "standard": {
+    "ignore": [
+      "/vendor/",
+      "/apps/",
+      "/test/",
+      "/v8env/",
+      "/v8env_test"
+    ],
+    "parser": "babel-eslint",
+    "plugins": [ "typescript" ]
   }
 }
