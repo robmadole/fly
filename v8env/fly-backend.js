@@ -1,7 +1,7 @@
-import { SingleUpstreamBackend } from "./backends/single-upstream-backend"
+import { SingleUpstreamBackend } from './backends/single-upstream-backend'
 
 export class FlyBackend {
-	static getBackend(backend) {
-		return new SingleUpstreamBackend(backend)
-	}
+  static getBackend (backend) {
+    return new SingleUpstreamBackend(backend)
+  }
 }

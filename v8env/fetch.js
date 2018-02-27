@@ -12,43 +12,40 @@ import { transferInto } from './utils/buffer'
  * @returns {Promise<Response>} - A {@linkcode Promise} that resolves to a {@linkcode Response} object
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch}
  */
-export default function fetchInit(ivm, dispatcher) {
-	return async function fetch(url, init) {
-		logger.debug("fetch called", typeof url, typeof init)
-		try {
-			let req = new Request(url, init)
-			url = req.url
-			init = {
-				method: req.method,
-				headers: req.headers && req.headers.toJSON() || {},
-			}
-			return await _applyFetch(url, init, await req.arrayBuffer())
+export default function fetchInit (ivm, dispatcher) {
+  return async function fetch (url, init) {
+    logger.debug('fetch called', typeof url, typeof init)
+    try {
+      let req = new Request(url, init)
+      url = req.url
+      init = {
+        method: req.method,
+        headers: req.headers && req.headers.toJSON() || {}
+      }
+      return await _applyFetch(url, init, await req.arrayBuffer())
+    } catch (err) {
+      logger.debug('err applying nativeFetch', err.toString())
+      throw err
+    }
+  }
 
-		} catch (err) {
-			logger.debug("err applying nativeFetch", err.toString())
-			throw err
-		}
-	};
-
-	function _applyFetch(url, init, body) {
-		return new Promise(function (resolve, reject) {
-			logger.debug("gonna fetch", url, init && JSON.stringify(init))
-			dispatcher.dispatch("fetch",
-				url,
-				new ivm.ExternalCopy(init).copyInto({ release: true }),
-				transferInto(ivm, body),
-				new ivm.Reference(function _applyFetchCallback(err, nodeRes, nodeBody) {
-					if (err != null) {
-						logger.debug("err :(", err)
-						reject(err)
-						return
-					}
-					resolve(new Response(nodeBody, nodeRes))
-				})
-			)
-			logger.debug("dispatched nativefetch")
-		})
-	}
-
-
+  function _applyFetch (url, init, body) {
+    return new Promise(function (resolve, reject) {
+      logger.debug('gonna fetch', url, init && JSON.stringify(init))
+      dispatcher.dispatch('fetch',
+        url,
+        new ivm.ExternalCopy(init).copyInto({ release: true }),
+        transferInto(ivm, body),
+        new ivm.Reference(function _applyFetchCallback (err, nodeRes, nodeBody) {
+          if (err != null) {
+            logger.debug('err :(', err)
+            reject(err)
+            return
+          }
+          resolve(new Response(nodeBody, nodeRes))
+        })
+      )
+      logger.debug('dispatched nativefetch')
+    })
+  }
 }

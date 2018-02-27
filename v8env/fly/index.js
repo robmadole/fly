@@ -5,7 +5,7 @@ import SparkMD5 from 'spark-md5'
 /**
  * @namespace fly
  */
-export default function flyInit(ivm, dispatcher) {
+export default function flyInit (ivm, dispatcher) {
   return {
     cache: flyCacheInit(ivm, dispatcher),
     http: require('./http'),

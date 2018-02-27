@@ -1,4 +1,4 @@
-export default function timersInit(ivm) {
+export default function timersInit (ivm) {
   global.setTimeout = (function (st, ivm) {
     global.releasables.push(st)
     return function (cb, ms) {

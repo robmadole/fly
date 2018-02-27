@@ -118,7 +118,6 @@
       "/vendor/",
       "/apps/",
       "/test/",
-      "/v8env/",
       "/v8env_test"
     ],
     "parser": "babel-eslint",

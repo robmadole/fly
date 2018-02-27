@@ -1,8 +1,8 @@
 import { logger } from '../logger'
 import { format } from 'util'
 
-export default function flyLogInit(ivm, dispatcher) {
-  function log(lvl, ...args) {
+export default function flyLogInit (ivm, dispatcher) {
+  function log (lvl, ...args) {
     const last = args[args.length - 1]
     let metadata = {}
     if (typeof last === 'object') {
@@ -19,14 +19,14 @@ export default function flyLogInit(ivm, dispatcher) {
 
   /**
    * Specify which logging transport to use for all your `console.log` calls.
-   * @param {string} name 
-   * @param {Object} options 
+   * @param {string} name
+   * @param {Object} options
    */
-  log.addTransport = function addTransport(name, options) {
+  log.addTransport = function addTransport (name, options) {
     dispatcher.dispatch('addLogTransport', name,
       new ivm.ExternalCopy(options).copyInto({ release: true }),
       new ivm.Reference(function (err, added) {
-        logger.debug("added log transport... maybe!", err, added)
+        logger.debug('added log transport... maybe!', err, added)
       })
     )
   }
@@ -35,7 +35,7 @@ export default function flyLogInit(ivm, dispatcher) {
    * fly.log.addMetadata lets you add persistent metadata information
    * for every log entries.
    */
-  log.addMetadata = function addMetadata(metadata) {
+  log.addMetadata = function addMetadata (metadata) {
     dispatcher.dispatch('addLogMetadata',
       new ivm.ExternalCopy(metadata).copyInto({ release: true })
     )
@@ -43,4 +43,4 @@ export default function flyLogInit(ivm, dispatcher) {
   return log
 }
 
-function noop() { }
+function noop () { }

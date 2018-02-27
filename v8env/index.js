@@ -1,8 +1,8 @@
 import dispatcherInit from './fly/dispatcher'
 
-import { fireEvent, addEventListener, dispatchEvent, FetchEvent } from "./events"
-import { Middleware, MiddlewareChain } from "./middleware"
-import { FlyBackend } from "./fly-backend"
+import { fireEvent, addEventListener, dispatchEvent, FetchEvent } from './events'
+import { Middleware, MiddlewareChain } from './middleware'
+import { FlyBackend } from './fly-backend'
 import { ReadableStream, WritableStream, TransformStream } from 'web-streams-polyfill'
 
 import { TextEncoder, TextDecoder } from 'text-encoding'
@@ -36,90 +36,89 @@ const mwToRegister = [registerFlyBackend, registerFlyEcho, registerFlyRoutes, re
 global.releasables = []
 global.middleware = {}
 
-global.registerMiddleware = function registerMiddleware(type, fn) {
-	global.middleware[type] = fn
+global.registerMiddleware = function registerMiddleware (type, fn) {
+  global.middleware[type] = fn
 }
 
-global.bootstrap = function bootstrap() {
-	const ivm = global._ivm
+global.bootstrap = function bootstrap () {
+  const ivm = global._ivm
 
-	// Cleanup, early!
-	delete global._ivm
-	delete global.bootstrap
+  // Cleanup, early!
+  delete global._ivm
+  delete global.bootstrap
 
-	const dispatcher = dispatcherInit(ivm, global._dispatch)
-	delete global._dispatch
+  const dispatcher = dispatcherInit(ivm, global._dispatch)
+  delete global._dispatch
 
-	global.fly = flyInit(ivm, dispatcher)
-	global.releasables.push(global._dispatch)
+  global.fly = flyInit(ivm, dispatcher)
+  global.releasables.push(global._dispatch)
 
-	global.console = consoleInit(ivm, dispatcher)
-	timersInit(ivm)
+  global.console = consoleInit(ivm, dispatcher)
+  timersInit(ivm)
 
-	// // Web primitives (?)
-	global.ReadableStream = ReadableStream
-	global.WritableStream = WritableStream
-	global.TransformStream = TransformStream
+  // // Web primitives (?)
+  global.ReadableStream = ReadableStream
+  global.WritableStream = WritableStream
+  global.TransformStream = TransformStream
 
-	global.TextEncoder = TextEncoder
-	global.TextDecoder = TextDecoder
+  global.TextEncoder = TextEncoder
+  global.TextDecoder = TextDecoder
 
-	// // Web API
-	global.URL = URL
-	global.Headers = Headers
-	global.fetch = fetchInit(ivm, dispatcher)
-	global.Body = bodyInit(ivm, dispatcher)
-	// global.FormData = formDataInit(ivm, dispatcher)
-	global.Response = responseInit(ivm, dispatcher)
-	global.Request = requestInit(ivm, dispatcher)
+  // // Web API
+  global.URL = URL
+  global.Headers = Headers
+  global.fetch = fetchInit(ivm, dispatcher)
+  global.Body = bodyInit(ivm, dispatcher)
+  // global.FormData = formDataInit(ivm, dispatcher)
+  global.Response = responseInit(ivm, dispatcher)
+  global.Request = requestInit(ivm, dispatcher)
 
-	// oh boy
-	global.cache = cache
+  // oh boy
+  global.cache = cache
 
-	// // Events
-	global.fireEvent = fireEvent.bind(null, ivm)
-	global.addEventListener = addEventListener
-	global.dispatchEvent = dispatchEvent
+  // // Events
+  global.fireEvent = fireEvent.bind(null, ivm)
+  global.addEventListener = addEventListener
+  global.dispatchEvent = dispatchEvent
 
-	global.FetchEvent = FetchEvent
+  global.FetchEvent = FetchEvent
 
-	// DOM
-	// TODO: Reenable.
-	// global.Document = require('./document')
+  // DOM
+  // TODO: Reenable.
+  // global.Document = require('./document')
 
-	// Fly-specific
-	global.FlyBackend = FlyBackend
+  // Fly-specific
+  global.FlyBackend = FlyBackend
 
-	// Middleware
-	global.Middleware = Middleware
-	global.MiddlewareChain = MiddlewareChain
+  // Middleware
+  global.Middleware = Middleware
+  global.MiddlewareChain = MiddlewareChain
 
-	global.getHeapStatistics = function getHeapStatistics() {
-		return new Promise((resolve, reject) => {
-			dispatcher.dispatch('getHeapStatistics', new ivm.Reference(function (err, heap) {
-				if (err) {
-					reject(err)
-					return
-				}
-				resolve(heap)
-			}))
-		})
-	}
+  global.getHeapStatistics = function getHeapStatistics () {
+    return new Promise((resolve, reject) => {
+      dispatcher.dispatch('getHeapStatistics', new ivm.Reference(function (err, heap) {
+        if (err) {
+          reject(err)
+          return
+        }
+        resolve(heap)
+      }))
+    })
+  }
 
-	// load all middleware
-	for (const mwReg of mwToRegister)
-		mwReg(ivm, dispatcher)
+  // load all middleware
+  for (const mwReg of mwToRegister) { mwReg(ivm, dispatcher) }
 }
 
 global.sourceMaps = {}
 
-global.teardown = function teardown() {
-	let r;
-	while (r = global.releasables.pop()) {
-		try {
-			r.release()
-		} catch (e) {
-			// fail silently
-		}
-	}
+global.teardown = function teardown () {
+  let r
+  while (r = global.releasables.pop()) {
+    try {
+      r.release()
+    } catch (e) {
+      // fail silently
+    }
+  }
 }
