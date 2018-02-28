@@ -1,3 +1,4 @@
+/* global Response, Request */
 import SessionStore from './session_store'
 import { logger } from './logger'
 import { EventEmitter2 as EventEmitter } from 'eventemitter2'
@@ -26,14 +27,14 @@ export class FetchEvent {
   }
 
   /**
-	 * respondWith callback
-	 * @callback respondWithCallback
-	 * @param {Response} The HTTP response to reply with
-	 */
+   * respondWith callback
+   * @callback respondWithCallback
+   * @param {Response} The HTTP response to reply with
+   */
   /**
-	 * Registers a function to generate a response for this event
-	 * @param {respondWithCallback} fn
-	 */
+   * Registers a function to generate a response for this event
+   * @param {respondWithCallback} fn
+   */
   respondWith (fn) {
     this.respondWithEntered = true
     try {
@@ -66,6 +67,7 @@ export function addEventListener (name, fn) {
   emitter.addListener(name, fn)
 }
 
+/* eslint-disable no-useless-call */
 export function fireEvent (ivm, name, ...args) {
   args.unshift(ivm)
   try {
@@ -121,7 +123,7 @@ function fireFetchEvent (ivm, url, req, body, callback) {
 
     selfCleaningCallback.apply(undefined, [null,
       new ivm.ExternalCopy({
-        headers: res.headers && res.headers.toJSON() || {},
+        headers: (res.headers && res.headers.toJSON()) || {},
         status: res.status
       }).copyInto({ release: true }),
       body
@@ -159,3 +161,4 @@ function fireFetchEndEvent (ivm, url, nodeReq, nodeRes, err, done) {
 export function dispatchEvent (event) {
   emitter.emit(event.type, event)
 }
+/* eslint-disable no-useless-call */

@@ -1,3 +1,4 @@
+/* global Request, Response */
 import * as cookie from 'cookie'
 
 const cookieAttributeNames = ['Max-Age', 'Expires', 'HttpOnly', 'Secure', 'Path', 'SameSite', 'Domain']
@@ -14,19 +15,19 @@ export default class CookieJar {
   }
 
   /**
-	 * Gets a cookie by name
-	 * @param {String} name
-	 */
+   * Gets a cookie by name
+   * @param {String} name
+   */
   get (name) {
     return this.cookies.find((c) => c.name === name)
   }
 
   /**
-	 * Sets a cookie, and applies it to the underlying {@linkcode Request} or {@linkcode Response}
-	 * @param {String} name
-	 * @param {String} value
-	 * @param {Object} [options]
-	 */
+   * Sets a cookie, and applies it to the underlying {@linkcode Request} or {@linkcode Response}
+   * @param {String} name
+   * @param {String} value
+   * @param {Object} [options]
+   */
   append (name, value, options) {
     const cookieStr = cookie.serialize(name, value, options)
     this.cookies = this.cookies.concat(parseCookie(cookieStr))
@@ -47,7 +48,7 @@ function parseCookie (cookieStr) {
   let cookies = []
   let parsed = cookie.parse(cookieStr)
   for (let k in parsed) {
-    if (cookieAttributeNames.indexOf(k) != -1) {
+    if (cookieAttributeNames.indexOf(k) !== -1) {
       options[k] = parsed[k]
       continue
     }

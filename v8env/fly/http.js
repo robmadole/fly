@@ -1,3 +1,4 @@
+/* global URL, Response */
 let router = null
 let fetchEventBound = false
 let flyFetchHandler = null
@@ -59,12 +60,12 @@ module.exports = {
   route () {
     const r = ensureRouter()
     let method = 'GET'
-    if (arguments.length == 2) {
+    if (arguments.length === 2) {
       method = ['GET', 'HEAD']
-    } else if (arguments.length == 3) {
+    } else if (arguments.length === 3) {
       method = arguments[0]
     } else {
-      throw 'fly.route requires either 2 or three arguments: (method?, pattern, fn)'
+      throw new Error('fly.route requires either 2 or three arguments: (method?, pattern, fn)')
     }
     const pattern = arguments[arguments.length - 2]
     const fn = arguments[arguments.length - 1]

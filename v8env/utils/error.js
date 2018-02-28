@@ -1,3 +1,5 @@
+/* eslint-disable no-useless-call */
+
 const parsedSourceMaps = {}
 let SourceMapConsumer
 
@@ -139,11 +141,11 @@ function CallSiteToString () {
     }
     var methodName = this.getMethodName()
     if (functionName) {
-      if (typeName && functionName.indexOf(typeName) != 0) {
+      if (typeName && functionName.indexOf(typeName) !== 0) {
         line += typeName + '.'
       }
       line += functionName
-      if (methodName && functionName.indexOf('.' + methodName) != functionName.length - methodName.length - 1) {
+      if (methodName && functionName.indexOf('.' + methodName) !== functionName.length - methodName.length - 1) {
         line += ' [as ' + methodName + ']'
       }
     } else {

@@ -1,9 +1,10 @@
+/* global Body, Headers */
 import { logger } from './logger'
 import CookieJar from './cookie_jar'
 
 import { bodyUsedError } from './body'
 
-export default function requestInit (ivm) {
+export default function requestInit (_ivm) {
   function byteUpperCase (s) {
     return String(s)
       .replace(/[a-z]/g, function (c) {
@@ -14,16 +15,16 @@ export default function requestInit (ivm) {
   function normalizeMethod (m) {
     var u = byteUpperCase(m)
     if (u === 'DELETE' || u === 'GET' || u === 'HEAD' || u === 'OPTIONS' ||
-			u === 'POST' || u === 'PUT') return u
+      u === 'POST' || u === 'PUT') return u
     return m
   }
 
   /**
-	 * An HTTP request
-	 * @param {Blob|String} [body]
-	 * @param {Object} [init]
-	 * @mixes Body
-	 */
+   * An HTTP request
+   * @param {Blob|String} [body]
+   * @param {Object} [init]
+   * @mixes Body
+   */
   class Request {
     constructor (input, init) {
       if (arguments.length < 1) throw TypeError('Not enough arguments')
@@ -33,19 +34,19 @@ export default function requestInit (ivm) {
 
       // readonly attribute ByteString method;
       /**
-			 * The HTTP request method
-			 * @readonly
-			 * @default GET
-			 * @type {string}
-			 */
+       * The HTTP request method
+       * @readonly
+       * @default GET
+       * @type {string}
+       */
       this.method = 'GET'
 
       // readonly attribute USVString url;
       /**
-			 * The request URL
-			 * @readonly
-			 * @type {string}
-			 */
+       * The request URL
+       * @readonly
+       * @type {string}
+       */
       this.url = ''
 
       // readonly attribute DOMString referrer;
@@ -86,9 +87,9 @@ export default function requestInit (ivm) {
 
       if ('headers' in init) {
         /**
-				 * Headers sent with the request.
-				 * @type {Headers}
-				 */
+         * Headers sent with the request.
+         * @type {Headers}
+         */
         this.headers = new Headers(init.headers)
       } else if (!('headers' in this)) {
         this.headers = new Headers()
@@ -100,7 +101,7 @@ export default function requestInit (ivm) {
       }
 
       if ('credentials' in init &&
-				(['omit', 'same-origin', 'include'].indexOf(init.credentials) !== -1)) { this.credentials = init.credentials }
+        (['omit', 'same-origin', 'include'].indexOf(init.credentials) !== -1)) { this.credentials = init.credentials }
     }
 
     get cookies () {

@@ -1,18 +1,19 @@
+/* global Body, Headers */
 import CookieJar from './cookie_jar'
 import { bodyUsedError } from './body'
 
-export default function responseInit (ivm) {
+export default function responseInit (_ivm) {
   function ushort (x) { return x & 0xFFFF }
 
   /**
-	 * Class representing a fetch response.
-	 * @param {Blob|String} [body]
-	 * @param {Object} [init]
-	 * @param {Number} [init.status]
-	 * @param {String} [init.statusText]
-	 * @param {String} [init.url]
-	 * @mixes Body
-	 */
+   * Class representing a fetch response.
+   * @param {Blob|String} [body]
+   * @param {Object} [init]
+   * @param {Number} [init.status]
+   * @param {String} [init.statusText]
+   * @param {String} [init.url]
+   * @mixes Body
+   */
   class Response {
     constructor (body, init) {
       if (arguments.length < 1) { body = '' }
@@ -22,17 +23,17 @@ export default function responseInit (ivm) {
       init = Object(init) || {}
 
       /**
-			 * @public
-			 * @type {Headers}
-			 */
+       * @public
+       * @type {Headers}
+       */
       this.headers = new Headers(init.headers)
 
       // readonly attribute USVString url;
       /**
-			 * @public
-			 * @type {String}
-			 * @readonly
-			 */
+       * @public
+       * @type {String}
+       * @readonly
+       */
       this.url = init.url || ''
 
       // readonly attribute unsigned short status;
@@ -40,29 +41,29 @@ export default function responseInit (ivm) {
       if (status < 200 || status > 599) throw RangeError()
 
       /**
-			 * @public
-			 * @type {integer}
-			 * @readonly
-			 */
+       * @public
+       * @type {integer}
+       * @readonly
+       */
       this.status = status
 
       // readonly attribute boolean ok;
       /**
-			 * @public
-			 * @type {boolean}
-			 * @readonly
-			 */
+       * @public
+       * @type {boolean}
+       * @readonly
+       */
       this.ok = this.status >= 200 && this.status <= 299
 
       // readonly attribute ByteString statusText;
       var statusText = 'statusText' in init ? String(init.statusText) : 'OK'
-      if (/[^\x00-\xFF]/.test(statusText)) throw TypeError()
+      if (/[^\x00-\xFF]/.test(statusText)) throw TypeError() // eslint-disable-line no-control-regex
 
       /**
-			 * @public
-			 * @type {String}
-			 * @readonly
-			 */
+       * @public
+       * @type {String}
+       * @readonly
+       */
       this.statusText = statusText
 
       // readonly attribute Headers headers;
@@ -80,9 +81,9 @@ export default function responseInit (ivm) {
     }
 
     /**
-		 * @public
-		 * @type CookieJar
-		 */
+     * @public
+     * @type CookieJar
+     */
     get cookies () {
       if (this.cookieJar) { return this.cookieJar }
       this.cookieJar = new CookieJar(this)

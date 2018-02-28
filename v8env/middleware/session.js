@@ -1,3 +1,4 @@
+/* global registerMiddleware, session */
 import { logger } from '../logger'
 
 export default function registerSession () {

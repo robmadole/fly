@@ -1,3 +1,5 @@
+/* eslint-disable no-useless-call */
+
 import { logger } from '../logger'
 
 export default function dispatcherInit (ivm, dispatch) {

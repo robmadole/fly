@@ -1,3 +1,4 @@
+/* global TextDecoder */
 import { logger } from '../logger'
 import { transferInto } from '../utils/buffer'
 
@@ -43,7 +44,7 @@ export default function flyCacheInit (ivm, dispatcher) {
       logger.debug('cache set')
       let size = value.length
       if (size > 2 * 1024 * 1024) {
-        return Promise.reject('Cache does not support values > 2MB')
+        return Promise.reject(new Error('Cache does not support values > 2MB'))
       }
       if (value instanceof ArrayBuffer) {
         logger.debug('Transferring buffer:', key, value.byteLength)

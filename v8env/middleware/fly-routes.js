@@ -1,3 +1,4 @@
+/* global registerMiddleware, Request, Response, URL, session */
 import { Middleware } from '../middleware'
 
 export default function registerFlyRoutes () {
@@ -12,7 +13,7 @@ export default function registerFlyRoutes () {
 
       let url = new URL(req.url)
 
-      if (rule.action_type == 'redirect') {
+      if (rule.action_type === 'redirect') {
         const redirectURL = rewriteRedirectURL(rule, url)
 
         return new Response('', {
@@ -42,20 +43,20 @@ export default function registerFlyRoutes () {
         return false
       }
 
-      if (rule.match_scheme && rule.match_scheme != u.protocol.slice(0, -1)) {
+      if (rule.match_scheme && rule.match_scheme !== u.protocol.slice(0, -1)) {
         return false
       }
 
-      if (rule.hostname && rule.hostname.hostname != u.hostname) {
+      if (rule.hostname && rule.hostname.hostname !== u.hostname) {
         return false
       }
 
       /*
-			       This section is really annoying, but now we can nicely support rules for
-			       logged-in users using `global.session` and session middleware.
-			       Some rules in production might still rely on the header value, though.
-			      */
-      if (rule.http_header_key == 'Fly-User-Id') {
+        This section is really annoying, but now we can nicely support rules for
+        logged-in users using `global.session` and session middleware.
+        Some rules in production might still rely on the header value, though.
+      */
+      if (rule.http_header_key === 'Fly-User-Id') {
         if (!session.get('loggedIn')) {
           return false
         }
@@ -80,8 +81,8 @@ export default function registerFlyRoutes () {
 
     function rewriteURL (rule, url) {
       if (!(rule instanceof Object) ||
-				!rule.path_pattern ||
-				!rule.path_replacement_pattern) {
+        !rule.path_pattern ||
+        !rule.path_replacement_pattern) {
         return url
       }
       url.pathname = url.pathname.replace(new RegExp(rule.path_pattern), rule.path_replacement_pattern)
@@ -90,12 +91,12 @@ export default function registerFlyRoutes () {
 
     function rewriteRedirectURL (rule, url) {
       if (!(rule instanceof Object) ||
-				!rule.path_pattern ||
-				!rule.redirect_url) {
+        !rule.path_pattern ||
+        !rule.redirect_url) {
         return url
       }
       const redirectURL = url.pathname.replace(new RegExp(rule.path_pattern), rule.redirect_url)
-      if (url.pathname == redirectURL) {
+      if (url.pathname === redirectURL) {
         return url
       } else {
         return redirectURL
@@ -107,7 +108,7 @@ export default function registerFlyRoutes () {
         return null
       }
       return app.config.backends.find((backend) => {
-        return backend.id == id
+        return backend.id === id
       })
     }
   }()))

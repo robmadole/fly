@@ -1,3 +1,4 @@
+/* global Response, Request */
 import { logger } from './logger'
 import { transferInto } from './utils/buffer'
 
@@ -20,7 +21,7 @@ export default function fetchInit (ivm, dispatcher) {
       url = req.url
       init = {
         method: req.method,
-        headers: req.headers && req.headers.toJSON() || {}
+        headers: (req.headers && req.headers.toJSON()) || {}
       }
       return await _applyFetch(url, init, await req.arrayBuffer())
     } catch (err) {

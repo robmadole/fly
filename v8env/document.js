@@ -1,3 +1,4 @@
+/* global ReadableStream */
 import * as htmlparser from 'htmlparser2'
 
 import {
@@ -9,9 +10,9 @@ import {
 
 import { logger } from './logger'
 
-const WritableParser = htmlparser.WritableStream
-
 import * as css from 'css-select'
+
+const WritableParser = htmlparser.WritableStream
 
 export default class Document {
   constructor (dom) {

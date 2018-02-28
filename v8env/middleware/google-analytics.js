@@ -1,20 +1,21 @@
+/* global fetch, FormData, URL, Response, registerMiddleware, addEventListener */
 import { logger } from '../logger'
 
 export default function registerGoogleAnalytics () {
   registerMiddleware('google-analytics', (function () {
-    const gaCollectURL = 'http://www.google-analytics.com/collect',
-      gaURLParams = {
-        utm_source: 'cs',
-        utm_name: 'cn',
-        utm_medium: 'cm',
-        utm_term: 'ck',
-        utm_content: 'cc',
-        utm_id: 'ci',
-        gclid: 'gclid',
-        dclid: 'dclid'
-      },
-      ignoreCookie = /(__utm.|utmctr|utmcmd.|utmccn.|_ga|_gat|_gid|has_js|__gads)/,
-      ignoreQueryParam = /[&?](utm_(campaign|content|medium|source|term)|gclid|cx|ie|cof|siteurl|zanpid|origin)=([A-z0-9_\\-\\.%25]+)/
+    const gaCollectURL = 'http://www.google-analytics.com/collect'
+    const gaURLParams = {
+      utm_source: 'cs',
+      utm_name: 'cn',
+      utm_medium: 'cm',
+      utm_term: 'ck',
+      utm_content: 'cc',
+      utm_id: 'ci',
+      gclid: 'gclid',
+      dclid: 'dclid'
+    }
+    const ignoreCookie = /(__utm.|utmctr|utmcmd.|utmccn.|_ga|_gat|_gid|has_js|__gads)/
+    const ignoreQueryParam = /[&?](utm_(campaign|content|medium|source|term)|gclid|cx|ie|cof|siteurl|zanpid|origin)=([A-z0-9_\\-\\.%25]+)/
 
     const bodyEndTagRegex = /(<\/body>)/
     const htmlContentType = /^text\/html/
@@ -32,8 +33,8 @@ export default function registerGoogleAnalytics () {
       let sess = this.session
       logger.debug('session', typeof this.session)
 
-      const userID = sess.userID,
-        clientID = sess.clientID
+      const userID = sess.userID
+      const clientID = sess.clientID
 
       // TODO
       let cache = this.cache
@@ -81,12 +82,12 @@ export default function registerGoogleAnalytics () {
       return async function (event) {
         logger.debug('in fetch end')
         // throw new Error("waaaaaa")
-        const req = event.request,
-          res = event.response,
-          err = event.error,
-          success = res.ok,
-          ua = req.headers.get('user-agent'),
-          remoteAddr = req.remoteAddr.split(':')[0]
+        const req = event.request
+        const res = event.response
+        const err = event.error
+        const success = res.ok
+        const ua = req.headers.get('user-agent')
+        const remoteAddr = req.remoteAddr.split(':')[0]
 
         logger.debug('made it after assignments')
 
@@ -117,7 +118,7 @@ export default function registerGoogleAnalytics () {
 
         logger.debug('got all kinds of form data set!')
 
-        if (userID != '') form.set('uid', userID)
+        if (userID !== '') form.set('uid', userID)
 
         if (!success) {
           form.set('t', 'exception')

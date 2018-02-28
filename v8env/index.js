@@ -113,10 +113,11 @@ global.bootstrap = function bootstrap () {
 global.sourceMaps = {}
 
 global.teardown = function teardown () {
-  let r
-  while (r = global.releasables.pop()) {
+  let r = global.releasables.pop()
+  while (r) {
     try {
       r.release()
+      r = global.releasables.pop()
     } catch (e) {
       // fail silently
     }

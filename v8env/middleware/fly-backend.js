@@ -1,3 +1,4 @@
+/* global Response, registerMiddleware */
 import { FlyBackend } from '../fly-backend'
 import { logger } from '../logger'
 

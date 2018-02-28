@@ -18,17 +18,17 @@ export default function Headers (init) {
 Headers.prototype = {
   // void append(ByteString name, ByteString value);
   /**
-	 * Adds a header. Does not overwrite existing headers with same name
-	 * @param {String} name
-	 * @param {String} value
-	 */
+   * Adds a header. Does not overwrite existing headers with same name
+   * @param {String} name
+   * @param {String} value
+   */
   append: function append (name, value) {
     name = name.toLowerCase()
     this._headerList.push([name, value])
   },
 
   /** Deletes header(s) by name
-	 * @param {String} name */
+   * @param {String} name */
   'delete': function delete_ (name) {
     name = name.toLowerCase()
     var index = 0
@@ -38,10 +38,10 @@ Headers.prototype = {
   },
 
   /**
-	 * Gets first header by name
-	 * @param {String} name
-	 * @returns {String?}
-	 */
+   * Gets first header by name
+   * @param {String} name
+   * @returns {String?}
+   */
   get: function get (name) {
     name = name.toLowerCase()
     for (var index = 0; index < this._headerList.length; ++index) {
@@ -51,10 +51,10 @@ Headers.prototype = {
   },
 
   /**
-	 * Gets all headers by name
-	 * @param {String} name
-	 * @returns {sequence<String>}
-	 */
+   * Gets all headers by name
+   * @param {String} name
+   * @returns {sequence<String>}
+   */
   getAll: function getAll (name) {
     name = name.toLowerCase()
     var sequence = []
@@ -65,10 +65,10 @@ Headers.prototype = {
   },
 
   /**
-	 * Checks for existence of header by name
-	 * @param {String} name
-	 * @returns {boolean}
-	 */
+   * Checks for existence of header by name
+   * @param {String} name
+   * @returns {boolean}
+   */
   has: function has (name) {
     name = name.toLowerCase()
     for (var index = 0; index < this._headerList.length; ++index) {
@@ -78,10 +78,10 @@ Headers.prototype = {
   },
 
   /**
-	 * Sets a header by name. Overwrites existing headers with same name
-	 * @param {String} name
-	 * @param {String} value
-	 */
+   * Sets a header by name. Overwrites existing headers with same name
+   * @param {String} name
+   * @param {String} value
+   */
   set: function set (name, value) {
     name = name.toLowerCase()
     for (var index = 0; index < this._headerList.length; ++index) {
@@ -97,8 +97,8 @@ Headers.prototype = {
   },
 
   /**
-	 * @returns {Object<string,string[]>}
-	 */
+   * @returns {Object<string,string[]>}
+   */
   toJSON: function toJSON () {
     const jsonHeaders = {}
     for (let h of this._headerList) {

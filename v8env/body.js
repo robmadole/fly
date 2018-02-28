@@ -1,3 +1,4 @@
+/* global TextEncoder, TextDecoder */
 import { ReadableStream } from 'web-streams-polyfill'
 import { logger } from './logger'
 
@@ -80,11 +81,11 @@ export default function bodyInit (ivm, dispatcher) {
     }.bind(this)
 
     /**
-		 * Buffers and returns the body
-		 * @returns {Uint8Array} Raw body data
-		 * @function
-		 * @memberof Body
-		 */
+     * Buffers and returns the body
+     * @returns {Uint8Array} Raw body data
+     * @function
+     * @memberof Body
+     */
     this.arrayBuffer = async function arrayBuffer () {
       if (this.bodyUsed) { throw bodyUsedError }
       const arr = await bufferFromStream(this.body.getReader())
@@ -110,7 +111,7 @@ export default function bodyInit (ivm, dispatcher) {
       return streamFromString(_stream)
     }
     // if (_stream instanceof FormData) {
-    // 	return streamFromString(_stream.toString())
+    //   return streamFromString(_stream.toString())
     // }
     logger.debug('make stream', typeof _stream, _stream.toString())
     throw unsupportedBodyTypeError
@@ -152,8 +153,8 @@ export default function bodyInit (ivm, dispatcher) {
         controller.enqueue(str)
         controller.close()
       },
-      cancel () { },
-      pull () { }
+      cancel () {},
+      pull () {}
     })
   }
 
@@ -171,7 +172,7 @@ function concatenate (resultConstructor, ...arrays) {
   for (let arr of arrays) {
     totalLength += arr.length
   }
-  let result = new resultConstructor(totalLength)
+  let result = new resultConstructor(totalLength) // eslint-disable-line
   let offset = 0
   for (let arr of arrays) {
     result.set(arr, offset)

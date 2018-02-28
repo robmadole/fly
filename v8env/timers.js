@@ -1,3 +1,5 @@
+/* eslint-disable no-useless-call */
+
 export default function timersInit (ivm) {
   global.setTimeout = (function (st, ivm) {
     global.releasables.push(st)

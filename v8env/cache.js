@@ -1,11 +1,12 @@
+/* global fly, URL, fetch, cache, Response */
 import { logger } from './logger'
 import CachePolicy from 'http-cache-semantics'
 
 /**
  * export:
- * 	match(req): res | null
- * 	add(req): void
- * 	put(req, res): void
+ *   match(req): res | null
+ *   add(req): void
+ *   put(req, res): void
  */
 
 export default {
@@ -43,14 +44,18 @@ export default {
     logger.debug('cache add')
 
     const res = await fetch(req)
-    return await cache.put(req, res)
+    return cache.put(req, res)
   },
   async put (req, res) {
     const resHeaders = {}
     const key = hashData(req)
 
     for (const h of res.headers) {
-      if (h[0] === 'set-cookie') { resHeaders[h[0]] = h[1] } else { resHeaders[h[0]] = h[1].join && h[1].join(',') || h[1] }
+      if (h[0] === 'set-cookie') {
+        resHeaders[h[0]] = h[1]
+      } else {
+        resHeaders[h[0]] = (h[1].join && h[1].join(',')) || h[1]
+      }
     }
     let cacheableRes = {
       status: res.status,
@@ -72,7 +77,7 @@ export default {
   }
 }
 
-function hashData (req, vary) {
+function hashData (req, _vary) {
   let toHash = ``
 
   const u = normalizeURL(req.url)

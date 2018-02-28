@@ -1,3 +1,4 @@
+/* global Response, middleware */
 import { logger } from './logger'
 
 class MiddlewareSettings {
@@ -56,11 +57,11 @@ export class Middleware {
   }
 
   /**
-	 * Runs a single middleware instance
-	 * @param {Middleware} mw  The middleware to run
-	 * @param {Object.<string,Object>} settings Settings for this middleware run
-	 * @param {Request} req The HTTP request to operate on
-	 */
+   * Runs a single middleware instance
+   * @param {Middleware} mw  The middleware to run
+   * @param {Object.<string,Object>} settings Settings for this middleware run
+   * @param {Request} req The HTTP request to operate on
+   */
   static run (mw, settings, req) {
     const chain = new MiddlewareChain()
     chain.use(mw, settings)
@@ -78,10 +79,10 @@ export class MiddlewareChain {
   }
 
   /**
-	 * Appends middleware to the chain
-	 * @param {Middleware} mw Middleware to add to the chain
-	 * @param {Object.<string,Object>} settings Settings for this middleware
-	 */
+   * Appends middleware to the chain
+   * @param {Middleware} mw Middleware to add to the chain
+   * @param {Object.<string,Object>} settings Settings for this middleware
+   */
   use (mw, settings) {
     // logger.debug("use called", mw.type, mw.settings.toString())
 
@@ -104,10 +105,10 @@ export class MiddlewareChain {
   }
 
   /**
-	 * Runs the chain of middleware
-	 * @param {Request} req The HTTP request to thread through the chain
-	 * @returns {Response} The resulting response
-	 */
+   * Runs the chain of middleware
+   * @param {Request} req The HTTP request to thread through the chain
+   * @returns {Response} The resulting response
+   */
   async run (req) {
     try {
       let res = await this.buildNext(this.chain[0], this.currentPos)(req)
@@ -138,7 +139,7 @@ export class MiddlewareChain {
   runMiddleware (mw, req, next) {
     logger.debug('run mw:', mw.type)
     try {
-      const res = mw.fn.call(mw, req, next)
+      const res = mw.fn(req, next)
       if (res instanceof Promise) { return res }
       throw errMiddlewareNotPromise
     } catch (err) {

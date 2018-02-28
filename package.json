@@ -118,9 +118,11 @@
       "/vendor/",
       "/apps/",
       "/test/",
-      "/v8env_test"
+      "/v8env_test",
+      "/v8env/testing/"
     ],
     "parser": "babel-eslint",
-    "plugins": [ "typescript" ]
+    "plugins": [ "typescript" ],
+    "globals": ["app", "fly"]
   }
 }
